@@ -1,0 +1,151 @@
+
+
+Terminal commands to create the project
+-----------------------------------------------------
+
+pip3 install virtualenv
+
+virtualenv -p python3 env
+
+source env/bin/activate
+
+
+pip install django
+
+django-admin startproject mysite
+
+
+	// Create the app
+python manage.py startapp polls
+
+	// Rund the DJango app ( start the server )
+python manage.py runserver
+ 	Then put the given IP-Adress in the browser in this case was: http://127.0.0.1:8000/
+
+
+
+
+
+
+Edxael: python manage.py makemigrations polls
+App 'polls' could not be found. Is it in INSTALLED_APPS?
+(env) 
+
+to fix this: go to: "mysite" folder and open the file: "settings.py"
+  whe in the folder navigate to the array: 
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+	'polls',       <------------( and add the following line as the last element in the array. )
+]
+
+
+	// Create the migrations for the App "polls"Edxael: python manage.py makemigrations polls
+Migrations for 'polls':
+  polls/migrations/0001_initial.py
+    - Create model Choise
+    - Create model Question
+    - Add field question to choise
+(env) 
+
+Edxael: python manage.py makemigrations polls
+Migrations for 'polls':
+  polls/migrations/0001_initial.py
+    - Create model Choise
+    - Create model Questionpython manage.py migrate
+
+    - Add field question to choise
+(env) 
+
+
+	// Finally Migrate the app
+python manage.py migrate
+
+
+
+      // -----------------------------
+        //   Section 3, Lecture 6
+        //   Start the Shell
+
+python manage.py shell
+
+import django   <--- To get django working
+django.setup()  <--- Setting Up D-Jango
+from polls.models import Question, Choise
+from django.utils import timezone
+q = Question(question_text = "What is your name", pub_date = timezone.now())
+q.save()
+Question.objects.all()
+
+q = Question.objects.get(pk=1)
+
+q.choise_set.create(choise_text = "Michael", votes = 0)
+q.choise_set.create(choise_text = "Eve", votes = 0)
+q.choise_set.create(choise_text = "Aliya", votes = 0)
+
+q.save()
+
+exit()
+
+//////////////////////////////////////////////////////////////////
+
+        ACCESS THE ADMING TOOL
+
+// Firs we need to create a super user.
+
+python manage.py createsuperuser
+Username (leave blank to use 'edxael'):
+Email address: erubio@zyphex.com
+Password:
+Password (again):
+  Superuser created successfully.
+
+
+    // Now start the server again
+python manage.py runserver
+    // then go to the next url:  http://127.0.0.1:8000/admin
+    // Enter the credentioals of the super user.
+
+ ***************************************************************
+
+    // Now go to the file "admin.py" located in: './mysite/polls/admin.py'
+
+
+
+
+-----------------------------------------------------
+
+
+
+
+
+from django.db import models
+
+# Create your models here.
+
+class Question(models.Model):
+    question_text = models.CharField(max_length=200)
+    pub_date = models.DateTimeField('date published')
+
+
+
+class Choise(models.Model):
+    choise_text = models.CharField(max_length=200)
+    votes = models.IntegerField(default=0)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+
+
+-------------------------------------------------------
+
+The two videon just in case:
+
+https://www.youtube.com/watch?v=oiZUreEpplE
+https://www.youtube.com/watch?v=a72Ag0LolN0
+
+
+
+
